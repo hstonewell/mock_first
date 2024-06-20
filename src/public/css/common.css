@@ -1,0 +1,106 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ヘッダー */
+.header {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 100px;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.header__heading {
+    font-weight: 100;
+    font-size: 32px;
+}
+
+.header__link {
+    margin: 0 auto;
+    width: 80px;
+    border: 1px solid #D9C6B5;
+    background-color: #F0F0F0;
+    color: #D9C6B5;
+    text-decoration: none;
+}
+
+/* コンテンツ */
+.content {
+    display: flex;
+    justify-content: center;
+    padding: 48px 0;
+    background-color: #F2F2F2;
+    /*height: 80vh;*/
+}
+
+.content__heading {
+    font-size: 24px;
+    padding: 15px;
+}
+
+/* ボタン */
+.btn {
+    display: block;
+    padding: 8px 32px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: #214BE0;
+    color: #FFF;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* フッター */
+.footer {
+    text-align: center;
+    height: 100px;
+    font-size: 20px;
+    padding: 15px;
+}
+
+/* ページネーション */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.pagination li:not(.active) {
+    border: 1px solid #E0DFDE;
+    padding: 4px 12px;
+}
+
+.pagination li:not(:last-child) {
+    border-right: none;
+}
+
+.pagination a {
+    color: #8B7969;
+    text-decoration: none;
+}
+
+.pagination__link {
+    text-decoration: none;
+}
+
+.active {
+    padding: 4px 12px;
+    border: 1px solid #8B7969;
+    background-color: #8B7969;
+    color: #FFF;
+}
