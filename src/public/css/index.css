@@ -1,0 +1,53 @@
+.header__link {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+}
+
+.header__link--item {
+    padding-left: 25px;
+    color: #000;
+    text-decoration: none;
+}
+
+.header__link--item:hover {
+    opacity: 0.8;
+}
+
+.content__inner {
+    width: 75vw;
+    text-align: center;
+}
+
+.attendance__unit {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.attendance__item {
+    background-color: #fff;
+    width: 48%;
+    padding: 80px;
+    margin-bottom: 40px;
+    text-align: center;
+    @media screen and (max-width: 959px) {
+            display: block;
+            width: 100%;
+        }
+    @media screen and (max-width: 480px) {
+            display: block;
+            width: 100%;
+        }
+}
+
+.attendance__item--active {
+    font-size: 24px;
+}
+
+.attendance__item--disabled {
+    font-size: 24px;
+    opacity: 0.2;
+}
