@@ -13,25 +13,17 @@ body {
 /* ヘッダー */
 .header {
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
     height: 100px;
-    padding: 20px;
+    padding: 20px 40px;
     background-color: #fff;
+    width: 100%;
 }
 
 .header__heading {
     font-weight: 100;
     font-size: 32px;
-}
-
-.header__link {
-    margin: 0 auto;
-    width: 80px;
-    border: 1px solid #D9C6B5;
-    background-color: #F0F0F0;
-    color: #D9C6B5;
-    text-decoration: none;
 }
 
 /* コンテンツ */
