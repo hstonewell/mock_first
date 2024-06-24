@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
-//Route::post('register', [登録処理をコピペしたコントローラ::class, 'store']);
-//Route::post('login', [ログイン処理をコピペしたコントローラ::class, 'store']);
-//Route::post('logout', [ログアウト処理をコピペしたコントローラ::class, 'destroy']);
+Route::post('/clockin', [AttendanceController::class, 'clockIn']);
+Route::post('/clockout', [AttendanceController::class, 'clockOut']);
