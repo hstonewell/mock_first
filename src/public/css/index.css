@@ -33,6 +33,9 @@
     padding: 80px;
     margin-bottom: 40px;
     text-align: center;
+    border: none;
+    cursor: pointer;
+    display: block;
     @media screen and (max-width: 959px) {
             display: block;
             width: 100%;
@@ -42,6 +45,17 @@
             display: block;
             width: 100%;
         }
+}
+
+.attendance__item:hover {
+    opacity: 0.8;
+}
+
+.attendance__submit {
+    width: 100%;
+    background: none;
+    padding: 0;
+    margin: 0;
 }
 
 .attendance__item--active {
