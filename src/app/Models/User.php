@@ -33,6 +33,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    /** 1:多 */
+    public function attendanceRecords()
+    {
+        return $this->hasMany(AttendanceRecord::class);
+    }
+
     /**
      * The attributes that should be cast.
      *
