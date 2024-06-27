@@ -13,6 +13,6 @@ class BreakRecord extends Model
 
     public function attendanceRecord()
     {
-        return $this->belongsTo(AttendanceRecord::class);
+        return $this->belongsTo(Attendance::class);
     }
 }

@@ -36,7 +36,7 @@ class User extends Authenticatable
     /** 1:多 */
     public function attendanceRecords()
     {
-        return $this->hasMany(AttendanceRecord::class);
+        return $this->hasMany(Attendance::class);
     }
 
     /**
