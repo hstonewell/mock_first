@@ -9,7 +9,9 @@ class BreakRecord extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['attendance_record_id', 'break_start', 'break_end'];
+    public $timestamps = false;
+
+    protected $fillable = ['attendance_id', 'break_start', 'break_end'];
 
     public function attendanceRecord()
     {
