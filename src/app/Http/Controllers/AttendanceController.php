@@ -20,79 +20,89 @@ class AttendanceController extends Controller
 
     public function clockIn()
     {
-        //一番最新のレコードを取り出す
+
         $oldRecord = Attendance::where('user_id', Auth::id())->orderBy('clock_in', 'desc')->first();
 
-        //最新のレコードがすでに打刻済みの場合の処理
-        if($oldRecord){
-            $oldRecordClockIn = new Carbon($oldRecord->clockIn);
-            $oldRecordDay = $oldRecordClockIn->startOfDay();
+        $newRecordDate = Carbon::today()->toDateString();
 
-            $oldTimeClockOut = new Carbon($oldRecord->clockOut);
-            $oldDay = $oldTimeClockOut->startOfDay();
+        //最新レコードの打刻日時と今日の日付の比較
+        if ($oldRecord){
+            $oldRecordDate = (new Carbon($oldRecord->date))->toDateString();
 
-            $newRecordDay = Carbon::today();
-
-            if (($oldRecordDay == $newRecordDay || $oldDay == $newRecordDay) && empty($oldRecord->clock_out)) {
+            //最新のレコードがすでに打刻済みの場合の処理
+            if ($oldRecordDate == $newRecordDate && empty($oldRecord->clock_out)) {
                 return redirect()->back()->withErrors(['msg' => 'すでに打刻済みです。']);
             }
         }
-            //0時を超えたら新しいレコード
-            $record = Attendance::create([
-                'user_id' => Auth::id(),
-                'date' => Carbon::now()->toDateString(),
-                'clock_in' => Carbon::now(),
-            ]);
-            return redirect()->back()->with('message', '打刻が完了しました。');
+
+        $record = Attendance::create([
+            'user_id' => Auth::id(),
+            'date' => Carbon::now()->toDateString(),
+            'clock_in' => Carbon::now(),
+        ]);
+
+        return redirect()->back()->with('message', '打刻が完了しました。');
     }
 
     public function clockOut()
     {
         $record = Attendance::where('user_id', Auth::id())->orderBy('clock_in', 'desc')->first();
 
-        if ($record) {
-            $record->update([
-                'clock_out' => Carbon::now(),
-            ]);
-            return redirect()->back()->with('message', '退勤打刻が完了しました。本日もお疲れ様でした。');
-        } else {
-            return redirect()->back()->withErrors(['msg' => '退勤打刻を行うための出勤打刻が存在しません。']);
+        //レコードが存在しない場合
+        if (empty($record)) {
+            return redirect()->back()->withErrors(['msg' => '出勤打刻がされていません。']);
         }
+        //すでに退勤打刻がされている場合
+        if ($record->clock_out) {
+            return redirect()->back()->withErrors(['msg' => 'すでに打刻済みです。']);
+        }
+
+        $record->update([
+            'clock_out' => Carbon::now(),
+        ]);
+
+        return redirect()->back()->with('message', '退勤打刻が完了しました。本日もお疲れ様でした。');
     }
 
     public function breakStart()
     {
-        $attendanceRecord = Attendance::where('user_id', Auth::id())
-        ->orderBy('clock_in', 'desc')
-        ->first();
+        $attendanceRecord = Attendance::where('user_id', Auth::id())->orderBy('clock_in', 'desc')->first();
+
+        if(empty($attendanceRecord)) {
+            return redirect()->back()->withErrors(['msg' => '出勤打刻がされていません。']);
+        }
+        //現在取っている休憩があるかどうか
+        $activeBreak = BreakRecord::where('attendance_id', $attendanceRecord->id)->whereNull('break_end')->first();
+        if ($activeBreak) {
+            return redirect()->back()->withErrors(['msg' => '既に休憩中です。']);
+        }
 
         $breakRecord = BreakRecord::create([
             'attendance_id' => $attendanceRecord->id,
             'break_start' => Carbon::now(),
         ]);
-        return redirect()->back();
-        //エラーメッセージを追加
+        return redirect()->back()->with('message', '休憩を開始しました。');
     }
 
     public function breakEnd()
     {
-        $attendanceRecord = Attendance::where('user_id', Auth::id())
-        ->orderBy('clock_in', 'desc')
-        ->first();
+        //最新の出勤記録を取得する
+        $attendanceRecord = Attendance::where('user_id', Auth::id())->orderBy('clock_in', 'desc')->first();
 
-        $breakRecord = BreakRecord::where('attendance_id', $attendanceRecord->id)
-        ->whereNull('break_end')
-        ->first();
+        //出勤記録がない場合
+        if(empty($attendanceRecord)) {
+            return redirect()->back()->withErrors(['msg' => '出勤打刻がされていません。']);
+        }
+        $breakRecord = BreakRecord::where('attendance_id', $attendanceRecord->id)->whereNull('break_end')->first();
 
         if($breakRecord){
             $breakRecord->update([
                 'break_end' => Carbon::now(),
             ]);
-        return redirect()->back();
-            //打刻完了メッセージを追加
+        return redirect()->back()->with('message', '休憩を終了しました');
+
         } else {
-            return redirect()->back();
-            //エラーメッセージを追加。出勤打刻が存在しない場合。
+            return redirect()->back()->withErrors(['msg' => '休憩打刻がされていません。']);
         }
     }
 }
