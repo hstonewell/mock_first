@@ -2,6 +2,14 @@ html,
 body {
     height: 100%;
     margin: 0;
+    font-family:
+        Helvetica Neue,
+        Arial,
+        Hiragino Sans,
+        Hiragino Kaku Gothic ProN,
+        BIZ UDPGothic,
+        Meiryo,
+        sans-serif;
 }
 
 .app {
@@ -22,7 +30,7 @@ body {
 }
 
 .header__heading {
-    font-weight: 100;
+    font-weight: normal;
     font-size: 32px;
 }
 
@@ -30,7 +38,7 @@ body {
 .content {
     display: flex;
     justify-content: center;
-    padding: 48px 0;
+    padding: 30px 0;
     background-color: #F2F2F2;
     /*height: 80vh;*/
 }
