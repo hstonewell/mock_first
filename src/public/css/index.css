@@ -8,6 +8,7 @@
     padding-left: 25px;
     color: #000;
     text-decoration: none;
+    font-weight: bold;
 }
 
 .header__link--item:hover {
