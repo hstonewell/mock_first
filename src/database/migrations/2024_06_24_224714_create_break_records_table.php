@@ -16,8 +16,8 @@ class CreateBreakRecordsTable extends Migration
         Schema::create('break_records', function (Blueprint $table) {
             $table->id();
             $table->foreignID('attendance_id')->constrained();
-            $table->dateTime('break_start')->nullable();
-            $table->dateTime('break_end')->nullable();
+            $table->time('break_start')->nullable();
+            $table->time('break_end')->nullable();
         });
     }
 
