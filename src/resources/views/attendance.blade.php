@@ -17,7 +17,7 @@
 
 @section('content')
 <div class="attendance-list">
-    <h2 class="content__heading">日付</h2>
+    <h2 class="content__heading">{{ $date }}</h2>
     <table class="attendance-list__inner">
         <tr class="attendance-list__row">
             <th class="attendance-list__header">名前</th>
@@ -26,41 +26,16 @@
             <th class="attendance-list__header">休憩時間</th>
             <th class="attendance-list__header">勤務時間</th>
         </tr>
+        @foreach ($records as $record)
         <tr class="attendance-list__row">
-            <td class="attendance-list__item">名前</td>
-            <td class="attendance-list__item">勤務開始</td>
-            <td class="attendance-list__item">勤務終了</td>
-            <td class="attendance-list__item">休憩時間</td>
-            <td class="attendance-list__item">休憩終了</td>
+            <td class="attendance-list__item">{{ $record->user->name }}</td>
+            <td class="attendance-list__item">{{ $record->clock_in }}</td>
+            <td class="attendance-list__item">{{ $record->clock_out }}</td>
+            <td class="attendance-list__item">{{ $record->total_break }}</td>
+            <td class="attendance-list__item">{{ $record->actual_working }}</td>
         </tr>
-        <tr class="attendance-list__row">
-            <td class="attendance-list__item">名前</td>
-            <td class="attendance-list__item">勤務開始</td>
-            <td class="attendance-list__item">勤務終了</td>
-            <td class="attendance-list__item">休憩時間</td>
-            <td class="attendance-list__item">休憩終了</td>
-        </tr>
-        <tr class="attendance-list__row">
-            <td class="attendance-list__item">名前</td>
-            <td class="attendance-list__item">勤務開始</td>
-            <td class="attendance-list__item">勤務終了</td>
-            <td class="attendance-list__item">休憩時間</td>
-            <td class="attendance-list__item">休憩終了</td>
-        </tr>
-        <tr class="attendance-list__row">
-            <td class="attendance-list__item">名前</td>
-            <td class="attendance-list__item">勤務開始</td>
-            <td class="attendance-list__item">勤務終了</td>
-            <td class="attendance-list__item">休憩時間</td>
-            <td class="attendance-list__item">休憩終了</td>
-        </tr>
-        <tr class="attendance-list__row">
-            <td class="attendance-list__item">名前</td>
-            <td class="attendance-list__item">勤務開始</td>
-            <td class="attendance-list__item">勤務終了</td>
-            <td class="attendance-list__item">休憩時間</td>
-            <td class="attendance-list__item">休憩終了</td>
-        </tr>
+        @endforeach
     </table>
+    <div class="attendance__pagination">{{ $records->links() }}</div>
 </div>
 @endsection
