@@ -58,6 +58,20 @@
     padding-right: 0;
 }
 
+/* 日付横のボタン */
+.attendance-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.attendance-date__btn {
+    background-color: #fff;
+    color: #214BE0;
+    border: 1px solid #214BE0;
+    height: 30px;
+    width: 45px;
+}
+
 /* ページネーション */
 .pagination {
     display: flex;
