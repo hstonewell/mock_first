@@ -67,6 +67,10 @@
         }
 }
 
+#disabled.attendance__item {
+    opacity: 0.5;
+}
+
 .attendance__item:hover {
     opacity: 0.8;
 }
@@ -85,5 +89,5 @@
 
 .attendance__item--disabled {
     font-size: 24px;
-    opacity: 0.2;
+    opacity: 0.5;
 }
