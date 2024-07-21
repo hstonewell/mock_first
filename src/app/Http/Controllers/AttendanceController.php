@@ -16,16 +16,19 @@ class AttendanceController extends Controller
     public function index()
     {
         if(Auth::check()) {
-            $attendanceRecord
-            = Attendance::where('user_id', Auth::id())->orderBy('clock_in', 'desc')->first();
+            $attendance
+            = Attendance::where('user_id', Auth::id())
+            ->whereDate('date', now()->toDateString())
+            ->first();
 
-            $canClockIn = !$attendanceRecord || ($attendanceRecord && $attendanceRecord->clock_out);
+            $latestBreak = null;
+            if ($attendance) {
+                $latestBreak = BreakRecord::where('attendance_id', $attendance->id)
+                    ->whereNull('break_end')
+                    ->first();
+            }
 
-            // セッションフラグを取得
-            $isWorking = session('working', false);
-            $isClockedOut = session('clockedOut', false);
-
-            return view('index', compact('canClockIn', 'isWorking', 'isClockedOut'));
+            return view('index', compact('attendance', 'latestBreak'));
         }
         return redirect('login');
     }
@@ -33,43 +36,49 @@ class AttendanceController extends Controller
     //勤務開始
     public function clockIn(Request $request)
     {
-        $oldRecord = Attendance::where('user_id', Auth::id())->orderBy('clock_in', 'desc')->first();
+        $activeAttendance =
+        Attendance::where('user_id', Auth::id())
+            ->whereDate('date', now()->toDateString())
+            ->first();
 
-        $newRecordDate = Carbon::today()->toDateString();
-
-        if ($oldRecord){
-            $oldRecordDate = (new Carbon($oldRecord->date))->toDateString();
-
-            if ($oldRecordDate == $newRecordDate && empty($oldRecord->clock_out)) {
-                return redirect()->back()->withErrors(['msg' => 'すでに打刻済みです。']);
-            }
-        }
-
-        $record = Attendance::create([
+        if (empty($activeAttendance)) {
+            Attendance::create([
             'user_id' => Auth::id(),
             'date' => Carbon::now()->toDateString(),
             'clock_in' => Carbon::now(),
         ]);
+        } else {
+            return redirect()->back()->withErrors(['msg' => 'すでに本日の出勤記録があります']);
+        }
 
-        return redirect()->back()->with('message', '打刻が完了しました。');
+        return redirect()->back()->with('message', '出勤打刻が完了しました。');
     }
 
     //勤務終了
     public function clockOut(Request $request)
     {
-        $record = Attendance::where('user_id', Auth::id())->orderBy('clock_in', 'desc')->first();
+        $activeAttendance = Attendance::where('user_id', auth()->id())
+            ->whereDate('date', now()->toDateString())
+            ->first();
 
-        if (empty($record)) {
-            return redirect()->back()->withErrors(['msg' => '出勤打刻がされていません。']);
+        if ($activeAttendance) {
+            $activeAttendance->update(['clock_out' => Carbon::now()]);
+        } else {
+            $prevAttendance = Attendance::where('user_id', Auth::id())
+                ->whereDate('date', now()->subDay()->toDateString())
+                ->first();
+
+            if ($prevAttendance && is_null($prevAttendance->clock_out)) {
+                $prevAttendance->update(['clock_out' => Carbon::now()->endOfDay()]);
+            }
+
+            Attendance::create([
+                'user_id' => Auth::id(),
+                'date' => Carbon::now()->toDateString(),
+                'clock_in' => Carbon::now()->startOfDay(),
+                'clock_out' => Carbon::now(),
+            ]);
         }
-
-        if ($record->clock_out) {
-            return redirect()->back()->withErrors(['msg' => 'すでに打刻済みです。']);
-        }
-
-        $record->update([
-            'clock_out' => Carbon::now(),
-        ]);
 
         return redirect()->back()->with('message', '退勤打刻が完了しました。本日もお疲れ様でした。');
     }
@@ -77,21 +86,35 @@ class AttendanceController extends Controller
     //休憩開始
     public function breakStart()
     {
-        $attendanceRecord = Attendance::where('user_id', Auth::id())->orderBy('clock_in', 'desc')->first();
-        $activeBreak = BreakRecord::where('attendance_id', $attendanceRecord->id)->whereNull('break_end')->first();
+        $activeAttendance = Attendance::where('user_id', auth()->id())
+            ->whereDate('date', now()->toDateString())
+            ->first();
 
-        if(empty($attendanceRecord)) {
-            return redirect()->back()->withErrors(['msg' => '出勤打刻がされていません。']);
+        if ($activeAttendance) {
+            BreakRecord::create([
+                'attendance_id' => $activeAttendance->id,
+                'break_start' => Carbon::now(),
+            ]);
+        } else {
+            $prevAttendance = Attendance::where('user_id', Auth::id())
+                ->whereDate('date', now()->subDay()->toDateString())
+                ->first();
+
+            if ($prevAttendance && is_null($prevAttendance->clock_out)) {
+                $prevAttendance->update(['clock_out' => Carbon::now()->endOfDay()]);
+            }
+
+            $newAttendance = Attendance::create([
+                'user_id' => Auth::id(),
+                'date' => Carbon::now()->toDateString(),
+                'clock_in' => Carbon::now()->startOfDay(),
+            ]);
+
+            BreakRecord::create([
+                'attendance_id' => $newAttendance->id,
+                'break_start' => Carbon::now(),
+            ]);
         }
-
-        if ($activeBreak) {
-            return redirect()->back()->withErrors(['msg' => '既に休憩中です。']);
-        }
-
-        $breakRecord = BreakRecord::create([
-            'attendance_id' => $attendanceRecord->id,
-            'break_start' => Carbon::now(),
-        ]);
 
         return redirect()->back()->with('message', '休憩を開始しました。');
     }
@@ -99,23 +122,61 @@ class AttendanceController extends Controller
     //休憩終了
     public function breakEnd()
     {
-        $attendanceRecord = Attendance::where('user_id', Auth::id())->orderBy('clock_in', 'desc')->first();
-        $breakRecord = BreakRecord::where('attendance_id', $attendanceRecord->id)->whereNull('break_end')->first();
+        $activeAttendance = Attendance::where('user_id', Auth::id())
+            ->whereDate('date', now()->toDateString())
+            ->first();
 
-        if(empty($attendanceRecord)) {
-            return redirect()->back()->withErrors(['msg' => '出勤打刻がされていません。']);
-        }
+        if ($activeAttendance) {
+            $breakRecord = BreakRecord::where('attendance_id', $activeAttendance->id)
+                ->whereNull('break_end')
+                ->first();
 
-        if($breakRecord){
-            $breakRecord->update([
-                'break_end' => Carbon::now(),
-            ]);
-        return redirect()->back()->with('message', '休憩を終了しました');
+            if ($breakRecord) {
+                if (Carbon::now()->format('H:i') == '00:00') {
+                    $breakRecord->update(['break_end' => Carbon::now()]);
+                } else {
+                    // 0時をまたいだ場合
+                    $breakRecord->update(['break_end' => Carbon::now()->startOfDay()]);
+
+                    // 新しい出勤記録と休憩を作成
+                    $newAttendance = Attendance::create([
+                        'user_id' => Auth::id(),
+                        'date' => Carbon::now()->toDateString(),
+                        'clock_in' => Carbon::now()->startOfDay(),
+                    ]);
+
+                    BreakRecord::create([
+                        'attendance_id' => $newAttendance->id,
+                        'break_start' => Carbon::now()->startOfDay(),
+                        'break_end' => Carbon::now(),
+                    ]);
+                }
+            }
 
         } else {
-            return redirect()->back()->withErrors(['msg' => '休憩打刻がされていません。']);
+            $prevAttendance = Attendance::where('user_id', Auth::id())
+                ->whereDate('date', now()->subDay()->toDateString())
+                ->first();
+
+            if ($prevAttendance && is_null($prevAttendance->clock_out)) {
+                $prevAttendance->update(['clock_out' => Carbon::now()->endOfDay()]);
+            }
+            $newAttendance = Attendance::create([
+                'user_id' => Auth::id(),
+                'date' => Carbon::now()->toDateString(),
+                'clock_in' => Carbon::now()->startOfDay(),
+            ]);
+
+            $breakRecord = BreakRecord::where('attendance_id', $newAttendance->id)
+                ->whereNull('break_end')
+                ->first();
+
+            if ($breakRecord) {
+                $breakRecord->update(['break_end' => Carbon::now()]);
+            }
         }
 
+        return redirect()->back()->with('message', '休憩を終了しました。');
     }
 
     //日付一覧の表示
@@ -125,9 +186,58 @@ class AttendanceController extends Controller
         $date = $request->input('date', $today->toDateString());
         $users = User::all();
 
-        $records = Attendance::with('user', 'breakRecords')->whereDate('date', $today)->paginate(5);
+        $records = Attendance::with('user', 'breakRecords')->whereDate('date', $date)->paginate(5);
 
-        foreach($records as $record) {
+        foreach ($records as $record) {
+            $record->clock_in = Carbon::parse($record->clock_in)->format('H:i:s');
+            $record->clock_out = Carbon::parse($record->clock_out)->format('H:i:s');
+
+            $totalBreakTime = 0;
+            foreach ($record->breakRecords as $breakRecord) {
+                if ($breakRecord->break_end) {
+                    $breakStart = Carbon::parse($breakRecord->break_start);
+                    $breakEnd = Carbon::parse($breakRecord->break_end);
+                    $totalBreakTime += $breakStart->diffInSeconds($breakEnd);
+                }
+            }
+            $record->total_break = gmdate('H:i:s', $totalBreakTime);
+
+            $actualWorkingTime = 0;
+            if ($record->clock_in && $record->clock_out) {
+                $clockIn = Carbon::parse($record->clock_in);
+                $clockOut = Carbon::parse($record->clock_out);
+                $actualWorkingTime = $clockIn->diffInSeconds($clockOut) - $totalBreakTime;
+            }
+            $record->actual_working = gmdate('H:i:s', $actualWorkingTime);
+        }
+
+        return view('attendance', compact('date', 'users', 'records'));
+    }
+
+    //日付横のボタンを押した時の動き
+    public function viewByDate(Request $request)
+    {
+        $displayDate = Carbon::parse($request->input('displayDate'));
+
+        if ($request->has('prevDate')) {
+            $displayDate->subDay();
+        }
+
+        if ($request->has('nextDate')) {
+            $displayDate->addDay();
+        }
+
+        return redirect()->route('attendance.view', ['date' => $displayDate->toDateString()]);
+    }
+
+    //ログインユーザの勤怠一覧表示
+    public function viewUserAttendance(Request $request)
+    {
+        $records = Attendance::where('user_id', Auth::id())
+        ->whereDate('date', now()->toDateString())
+        ->paginate(5);
+
+        foreach ($records as $record) {
             $record->clock_in = Carbon::parse($record->clock_in)->format('H:i:s');
             $record->clock_out = Carbon::parse($record->clock_out)->format('H:i:s');
 
@@ -142,7 +252,7 @@ class AttendanceController extends Controller
             $record->total_break = gmdate('H:i:s', $totalBreakTime);
 
             $actualWorkingTime = Carbon::create();
-            if($record->clock_in && $record->clock_out) {
+            if ($record->clock_in && $record->clock_out) {
                 $clockIn = Carbon::parse($record->clock_in);
                 $clockOut = Carbon::parse($record->clock_out);
                 $actualWorkingTime = $clockIn->diffInSeconds($clockOut) - $totalBreakTime;
@@ -152,7 +262,6 @@ class AttendanceController extends Controller
             $record->actual_working = gmdate('H:i:s', $actualWorkingTime);
         }
 
-        return view('attendance', compact('date', 'users', 'records'));
+        return view('userattendance', compact('records'));
     }
-
 }
