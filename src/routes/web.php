@@ -16,11 +16,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth')->group(function () {
-    Route::get('/index', [AttendanceController::class, 'index']);
+    Route::get('/index', [AttendanceController::class, 'index'])->name('index');
     Route::post('/clockin', [AttendanceController::class, 'clockIn']);
     Route::post('/clockout', [AttendanceController::class, 'clockOut']);
     Route::post('/breakstart', [AttendanceController::class, 'breakStart']);
     Route::post('/breakend', [AttendanceController::class, 'breakEnd']);
+    Route::get('/attendance', [AttendanceController::class, 'viewAttendance'])->name('attendance.view');
+    Route::post('/attendance/date', [AttendanceController::class, 'ViewByDate'])->name('attendance.date');
+    Route::get('/user_attendance', [AttendanceController::class, 'viewUserAttendance'])->name('attendance.user');
     //Route::post('/export', [ContactController::class, 'export']);
 });
 
