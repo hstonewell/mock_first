@@ -14,7 +14,17 @@
     <div class="app">
         <header class="header">
             <h1 class="header__heading">Atte</h1>
-            @yield('link')
+            @auth
+            <div class="header__link">
+                <a href="{{ route('index') }}" class="header__link--item">ホーム</a>
+                <a href="{{ route('attendance.user') }}" class="header__link--item" {{ request()->routeIs('attendance.user') ? 'disabled' : '' }}>{{ Auth::user()->name }}さんの勤怠一覧</a>
+                <a href="{{ route('attendance.view') }}" class="header__link--item" {{ request()->routeIs('attendance.view') ? 'disabled' : '' }}>日付一覧</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="header__link--item" class="header__link--item">ログアウト</button>
+                </form>
+            </div>
+            @endauth
         </header>
         <div class="content">
             @yield('content')
