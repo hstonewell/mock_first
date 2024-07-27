@@ -1,20 +1,4 @@
-.header__link {
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-}
-
-.header__link--item {
-    padding-left: 25px;
-    color: #000;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.header__link--item:hover {
-    opacity: 0.8;
-}
-
+/* ボタン押下時のメッセージ */
 .attendance__alert {
     display: block;
     justify-self: start;
@@ -34,6 +18,7 @@
     color: #842029;
 }
 
+/* コンテンツ */
 .content__inner {
     width: 75vw;
     text-align: center;

@@ -1,25 +1,16 @@
-/* ヘッダー */
-.header__link {
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-}
 
-.header__link--item {
-    padding-left: 25px;
-    color: #000;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.header__link--item:hover {
-    opacity: 0.8;
-}
 
 /* 日付別リスト */
 .attendance-list {
     width: 70%;
     text-align: center;
+    @media screen and (max-width: 959px) {
+            width:80%;
+        }
+    @media screen and (max-width: 480px) {
+            width: 100%;
+            margin: 15px;
+        }
 }
 
 .attendance-list__inner {
@@ -46,12 +37,24 @@
 .attendance-list__header:first-of-type,
 .attendance-list__item:first-of-type {
     padding-left: 50px;
+    @media screen and (max-width: 959px) {
+            padding-left: 30px;
+        }
+    @media screen and (max-width: 480px) {
+            padding-left: 15px;
+        }
 }
 
 .attendance-list__item {
     border-top: solid 1px #909090;
     padding-right: 55px;
     text-align: left;
+    @media screen and (max-width: 959px) {
+            padding-right: 30px;
+        }
+    @media screen and (max-width: 480px) {
+            padding-right: 15px;
+        }
 }
 
 .attendance-list__item:last-of-type {
