@@ -53,8 +53,8 @@ class AttendanceController extends Controller
         $this->handleMidnightShift();
 
         $activeAttendance = Attendance::where('user_id', auth()->id())
-            ->whereDate('date', now()->toDateString())
-            ->first();
+        ->whereNull('clock_out')
+        ->first();
 
         if ($activeAttendance) {
             $activeAttendance->update(['clock_out' => Carbon::now()]);
@@ -69,8 +69,8 @@ class AttendanceController extends Controller
         $this->handleMidnightShift();
 
         $activeAttendance = Attendance::where('user_id', auth()->id())
-            ->whereDate('date', now()->toDateString())
-            ->first();
+        ->whereNull('clock_out')
+        ->first();
 
         BreakRecord::create([
             'attendance_id' => $activeAttendance->id,
@@ -86,7 +86,7 @@ class AttendanceController extends Controller
         $this->handleMidnightShift();
 
         $activeAttendance = Attendance::where('user_id', auth()->id())
-        ->whereDate('date', now()->toDateString())
+        ->whereNull('clock_out')
         ->first();
 
         $breakRecord = BreakRecord::where('attendance_id', $activeAttendance->id)
@@ -108,29 +108,37 @@ class AttendanceController extends Controller
         $yesterday = $now->copy()->subDay()->toDateString();
 
         $attendance = Attendance::where('user_id', Auth::id())
-            //->whereDate('date', $yesterday)
-            ->whereNull('clock_out')
-            ->first();
+        ->whereNull('clock_out')
+        ->first();
 
         if ($attendance) {
-            $attendance->update(['clock_out' => Carbon::create($yesterday)->endOfDay()]);
+            $clockIn = Carbon::parse($attendance->clock_in);
+            if ($clockIn->toDateString() !== $today) {
+                $attendance->update(['clock_out' => $clockIn->copy()->endOfDay()->subSecond()]);
+
             Attendance::create([
                 'user_id' => Auth::id(),
                 'date' => $today,
                 'clock_in' => $now->startOfDay(),
             ]);
+            }
         }
 
-        $breakRecords = BreakRecord::whereHas('attendance', function ($query) use ($yesterday) {
-            $query->where('user_id', Auth::id())->whereDate('date', $yesterday);
+        $breakRecords = BreakRecord::whereHas('attendance', function ($query) {
+            $query->where('user_id', Auth::id())
+                ->whereNull('clock_out');
         })->whereNull('break_end')->get();
 
         foreach ($breakRecords as $breakRecord) {
-            $breakRecord->update(['break_end' => Carbon::create($yesterday)->endOfDay()]);
+            $breakStart = Carbon::parse($breakRecord->break_start);
+
+            if ($breakStart->toDateString() !== $today) {
+            $breakRecord->update(['break_end' => Carbon::create($yesterday)->endOfDay()->subSecond()]);
             BreakRecord::create([
                 'attendance_id' => $attendance->id,
                 'break_start' => $now->startOfDay(),
             ]);
+            }
         }
     }
 
