@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Auth\Events\Attempting;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/registered', [RegisterController::class, 'viewRegistered']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/index', [AttendanceController::class, 'index'])->name('index');
     Route::post('/clockin', [AttendanceController::class, 'clockIn']);
@@ -24,6 +27,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'viewAttendance'])->name('attendance.view');
     Route::post('/attendance/date', [AttendanceController::class, 'ViewByDate'])->name('attendance.date');
     Route::get('/user_attendance', [AttendanceController::class, 'viewUserAttendance'])->name('attendance.user');
-    //Route::post('/export', [ContactController::class, 'export']);
 });
 
