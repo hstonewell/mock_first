@@ -1,22 +1,36 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('css')
-<link rel="stylesheet" href="{{ asset('css/auth/register.css')}}">
-@endsection
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atte</title>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
+    <link rel="stylesheet" href="{{ asset('css/common.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/auth/register.css')}}">
+</head>
 
-@section('content')
-<div class="register-form__inner">
-    <h2 class="content__heading">登録完了</h2>
-    <div class="register-form__form">
-        <p>ご登録ありがとうございました。</p>
-        <button class="register-form__btn btn" type="submit" value="出退勤ページ">出退勤ページ</button>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1 class="header__heading">Atte</h1>
+        </header>
+        <div class="content">
+            <div class="register-form__inner">
+                <h2 class="content__heading">登録完了</h2>
+                <div class="registered">
+                    <p>ご登録ありがとうございました。</p>
+                    <form action="{{ route('index') }}" method="GET">
+                        @csrf
+                        <button class="registered__btn" type="submit" value="出退勤ページ">打刻ページへ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <small>Atte, inc.</small>
+        </footer>
     </div>
-    <div class="register-form__footer">
-        <form method="POST" action="{{ route('logout') }}">
-            <input type="hidden" id="logout" value="別のユーザでログインする">
-            <p>別のユーザでログインする</p>
-        </form>
-    </div>
-</div>
+</body>
 
-@endsection
+</html>

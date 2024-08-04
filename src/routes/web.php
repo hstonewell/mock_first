@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/registered', [RegisterController::class, 'viewRegistered']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/index', [AttendanceController::class, 'index'])->name('index');
+    Route::get('/', [AttendanceController::class, 'index'])->name('index');
     Route::post('/clockin', [AttendanceController::class, 'clockIn']);
     Route::post('/clockout', [AttendanceController::class, 'clockOut']);
     Route::post('/breakstart', [AttendanceController::class, 'breakStart']);
