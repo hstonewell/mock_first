@@ -230,4 +230,10 @@ class AttendanceController extends Controller
 
         return view('user_attendance', compact('user', 'records'));
     }
+
+    //会員登録後のビュー表示
+    public function viewRegistered()
+    {
+        return view('registered');
+    }
 }
