@@ -26,6 +26,14 @@
             </div>
             @endauth
         </header>
+
+        @if(session('message'))
+        <div class="attendance__alert--success">{{ session('message') }}</div>
+        @endif
+        @if ($errors->any())
+        <div class="attendance__alert--error">{{ $errors->first('msg') }}</div>
+        @endif
+
         <div class="content">
             @yield('content')
         </div>

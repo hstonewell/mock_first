@@ -6,13 +6,6 @@
 
 @section('content')
 <div class="content__inner">
-    @if(session('message'))
-    <div class="attendance__alert--success">{{ session('message') }}</div>
-    @endif
-    @if ($errors->any())
-    <div class="attendance__alert--error">{{ $errors->first('msg') }}</div>
-    @endif
-
     <h2 class="content__heading">{{ Auth::user()->name }}さんお疲れ様です！</h2>
 
     <div class="attendance__unit">
