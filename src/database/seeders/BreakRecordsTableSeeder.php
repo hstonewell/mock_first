@@ -16,7 +16,7 @@ class BreakRecordsTableSeeder extends Seeder
      */
     public function run()
     {
-        $attendances = Attendance::factory()->count(150)->create();
+        $attendances = Attendance::factory()->count(500)->create();
 
         $attendances->each(function ($attendance) {
             BreakRecord::factory()->create([
