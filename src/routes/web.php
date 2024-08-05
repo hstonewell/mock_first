@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/registered', [AttendanceController::class, 'viewRegistered']);
-
 Route::middleware('auth')->group(function () {
     Route::get('/', [AttendanceController::class, 'index'])->name('index');
     Route::post('/clockin', [AttendanceController::class, 'clockIn']);
@@ -27,5 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'viewAttendance'])->name('attendance.view');
     Route::post('/attendance/date', [AttendanceController::class, 'ViewByDate'])->name('attendance.date');
     Route::get('/user_attendance', [AttendanceController::class, 'viewUserAttendance'])->name('attendance.user');
+    Route::get('/registered', [AttendanceController::class, 'viewRegistered']);
 });
 
