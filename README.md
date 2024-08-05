@@ -1,4 +1,25 @@
 # Atte(アット・勤怠管理システム)
+勤怠管理アプリケーションです。
+会員登録後、勤務開始/終了および休憩開始/終了を記録することができます。
+
+![alt](atte_top.png)
+
+## 作成した目的
+勉強中のフレームワーク（Laravel）のアウトプット
+
+## 機能一覧
+ログイン機能、勤務/休憩時間管理、日付別勤怠一覧表示、ユーザー別勤怠一覧表示
+
+## 使用技術(実行環境)
+- PHP7.4.9
+- Laravel8.83.27
+- MySQL8.0.26
+
+## テーブル設計
+![alt](table.png)
+
+## ER図
+![alt](er.png)
 
 ## 環境構築
 **Dockerビルド**
@@ -33,14 +54,6 @@ php artisan migrate
 ``` bash
 php artisan db:seed
 ```
-
-## 使用技術(実行環境)
-- PHP7.4.9
-- Laravel8.83.27
-- MySQL8.0.26
-
-## ER図
-![alt](er.png)
 
 ## URL
 - 開発環境：http://localhost/
