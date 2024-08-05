@@ -41,7 +41,7 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                return redirect()->intended('/' . $request->alias . '/index');
+                return redirect('/');
             }
         });
 
