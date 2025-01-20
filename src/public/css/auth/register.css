@@ -18,8 +18,9 @@
 .register-form__item {
     border: 1px solid #909090;
     border-radius: 5px;
-    padding: 8px 12px;
-    margin-top: 20px;
+    padding: 0.8rem 1.2rem;
+    margin-top: 2rem;
+    font-size: 1.4em;
 }
 
 .register-form__input {
@@ -27,18 +28,19 @@
 }
 
 .register-form__error-message {
-    margin: 5px ;
+    margin: 0.5rem ;
     color: #FF9494;
 }
 
 .register-form__btn {
-    margin: 20px 0;
+    margin: 2rem 0;
 }
 
 .register-form__footer {
-    margin: 20px 0;
+    margin: 2rem 0;
     text-align: center;
     color: #909090;
+    font-size: 1.8em;
 }
 
 .register-form__footer a{
@@ -54,7 +56,7 @@
 .registered {
     width: 100%;
     height: 60vh;
-    padding: 30px 0px;
+    padding: 3rem 0px;
     text-align: center;
 }
 
@@ -65,10 +67,10 @@
 
 .registered__btn {
     width: 60%;
-    margin: 30px 0px;
+    margin: 3rem 0px;
     border: solid 1px #214BE0;
     color: #214BE0;
-    font-size: 16px;
+    font-size: 1.6em;
     cursor: pointer;
     line-height: 3em;
         @media screen and (max-width: 959px) {

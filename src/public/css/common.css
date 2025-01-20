@@ -10,6 +10,7 @@ body {
         BIZ UDPGothic,
         Meiryo,
         sans-serif;
+    font-size: 90%;
 }
 
 .app {
@@ -20,18 +21,22 @@ body {
 
 /* ヘッダー */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100px;
-    padding: 20px 40px;
     background-color: #fff;
-    width: 100%;
+    width: 100vw;
+}
+
+.header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+    padding: 1.5rem 0;
+    width: 90%;
 }
 
 .header__heading {
     font-weight: normal;
-    font-size: 32px;
+    font-size: 3.2em;
 }
 
 .header__link {
@@ -41,8 +46,9 @@ body {
 }
 
 .header__link--item {
-    padding-left: 25px;
+    padding-left: 2.5rem;
     color: #000;
+    font-size: 1.8em;
     text-decoration: none;
     font-weight: bold;
 }
@@ -60,25 +66,25 @@ a[disabled] {
 .content {
     display: flex;
     justify-content: center;
-    padding: 30px 0;
+    padding: 3rem 0;
     background-color: #F2F2F2;
+    flex-grow: 1;
 }
 
 .content__heading {
-    font-size: 24px;
-    padding: 15px;
+    font-size: 2.4em;
 }
 
 /* ボタン */
 .btn {
     display: block;
-    padding: 8px 32px;
+    padding: 0.8rem 3.2rem;
     width: 100%;
     border: none;
     border-radius: 5px;
     background-color: #214BE0;
     color: #FFF;
-    font-size: 16px;
+    font-size: 1.6em;
     cursor: pointer;
 }
 
@@ -89,7 +95,30 @@ a[disabled] {
 /* フッター */
 .footer {
     text-align: center;
-    height: 100px;
-    font-size: 20px;
-    padding: 15px;
+    font-size: 2em;
+    padding: 1.5rem;
+}
+
+/* レスポンシブデザイン */
+@media screen and (max-width: 959px) {
+    html {
+        font-size: calc(100vw / 66);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    html {
+        font-size: calc(100vw / 33);
+    }
+    .header__link {
+        display: none;
+    }
+    .header__link--buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+    .header__link--btn {
+        padding-left: 2.5rem;
+    }
+
 }

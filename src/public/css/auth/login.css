@@ -18,8 +18,9 @@
 .login-form__item {
     border: 1px solid #909090;
     border-radius: 5px;
-    padding: 8px 12px;
-    margin-top: 20px;
+    padding: 0.8rem 1.2rem;
+    margin-top: 2rem;
+    font-size: 1.4em;
 }
 
 .login-form__input {
@@ -27,18 +28,19 @@
 }
 
 .login-form__error-message {
-    margin: 5px ;
+    margin: 0.5rem ;
     color: #FF9494;
 }
 
 .login-form__btn {
-    margin: 20px 0;
+    margin: 2rem 0;
 }
 
 .login-form__footer {
-    margin: 20px 0;
+    margin: 2rem 0;
     text-align: center;
     color: #909090;
+    font-size: 1.8em;
 }
 
 .login-form__footer a{

@@ -5,14 +5,15 @@
 }
 
 .attendance__alert--success {
-    padding: 15px 40px;
+    padding: 1.5rem 4rem;
     border-color: #badbcc;
     background-color: #d1e7dd;
     color: #0f5132;
+    font-size: 1.8em;
 }
 
 .attendance__alert--error {
-    padding: 15px 40px;
+    padding: 1.5rem 4rem;
     border-color: #f5c2c7;
     background-color: #f8d7da;
     color: #842029;
@@ -29,22 +30,21 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 3rem;
 }
 
 .attendance__item {
     background-color: #fff;
     width: 48%;
-    padding: 80px;
-    margin-bottom: 40px;
+    padding: 8rem;
+    margin-bottom: 4rem;
     text-align: center;
     border: none;
     cursor: pointer;
     display: block;
     @media screen and (max-width: 959px) {
             display: block;
-            width: 100%;
-            padding: 10px;
+            padding: 4rem;
         }
     @media screen and (max-width: 480px) {
             display: block;
@@ -69,10 +69,10 @@
 }
 
 .attendance__item--active {
-    font-size: 24px;
+    font-size: 2.4em;
 }
 
 .attendance__item--disabled {
-    font-size: 24px;
+    font-size: 2.4em;
     opacity: 0.5;
 }
