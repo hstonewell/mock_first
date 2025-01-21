@@ -13,7 +13,9 @@
 <body>
     <div class="app">
         <header class="header">
-            <h1 class="header__heading">Atte</h1>
+            <div class="header__inner">
+                <h1 class="header__heading">Atte</h1>
+            </div>
         </header>
         <div class="content">
             <div class="register-form__inner">
