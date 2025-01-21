@@ -3,6 +3,8 @@
     flex-direction: column;
     align-items: center;
     width: 30vw;
+    margin: 0 auto;
+    padding: 2rem 0;
     @media screen and (max-width: 959px) {
             width: 60vw;
         }
@@ -40,7 +42,7 @@
     margin: 2rem 0;
     text-align: center;
     color: #909090;
-    font-size: 1.8em;
+    font-size: 1.4em;
 }
 
 .register-form__footer a{
@@ -52,12 +54,13 @@
     opacity: 0.8;
 }
 
-/* 登録完了ページ */
+/* 認証ページ */
 .registered {
     width: 100%;
     height: 60vh;
     padding: 3rem 0px;
     text-align: center;
+    font-size: 1.6em;
 }
 
 .registered a{
@@ -70,7 +73,6 @@
     margin: 3rem 0px;
     border: solid 1px #214BE0;
     color: #214BE0;
-    font-size: 1.6em;
     cursor: pointer;
     line-height: 3em;
         @media screen and (max-width: 959px) {
@@ -83,4 +85,11 @@
 
 .registered__btn:hover {
     opacity: 0.8;
+}
+
+.verify__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
 }

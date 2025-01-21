@@ -3,13 +3,15 @@
 /* 日付別リスト */
 .attendance-list {
     width: 70%;
+    height: 100%;
     text-align: center;
+    padding: 3rem 0;
+    margin: auto;
     @media screen and (max-width: 959px) {
             width:80%;
         }
     @media screen and (max-width: 480px) {
             width: 100%;
-            margin: 1.5rem;
         }
 }
 
@@ -18,7 +20,8 @@
     border-collapse: separate;
     border-spacing: 0px;
     padding-top: 3rem;
-    font-size: 1.2em;
+    table-layout: fixed;
+    white-space: nowrap
 }
 
 .attendance-list__inner th{
@@ -32,19 +35,33 @@
 
 .attendance-list__header {
     height: 6rem;
-    text-align: left;
-    font-size: 1.8em;
-}
-
-.attendance-list__header:first-of-type,
-.attendance-list__item:first-of-type {
-    padding-left: 1rem;
+    text-align: center;
+    font-size: 1.6em;
 }
 
 .attendance-list__item {
     border-top: solid 1px #909090;
+    text-align: center;
+    font-size: 1.6em;
+}
+
+.attendance-list__header:first-of-type,
+.attendance-list__item:first-of-type {
+    padding-left: 2rem;
     text-align: left;
-    font-size: 1.8em;
+}
+
+
+/* ユーザー別リスト */
+.attendance-list__username {
+    text-decoration: none;
+    color: black;
+    font-weight: 700;
+}
+
+.attendance-list__username:hover {
+    opacity: 0.6;
+    text-decoration: underline;
 }
 
 
@@ -99,4 +116,12 @@
 .pagination li:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+
+/* レスポンシブデザイン*/
+@media screen and (max-width: 480px) {
+    #breaktime,
+    #totalhours {
+        display: none;
+    }
 }
