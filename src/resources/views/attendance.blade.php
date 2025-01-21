@@ -19,16 +19,20 @@
             <th class="attendance-list__header">名前</th>
             <th class="attendance-list__header">勤務開始</th>
             <th class="attendance-list__header">勤務終了</th>
-            <th class="attendance-list__header">休憩時間</th>
-            <th class="attendance-list__header">勤務時間</th>
+            <th class="attendance-list__header" id="breaktime">休憩時間</th>
+            <th class="attendance-list__header" id="totalhours">勤務時間</th>
         </tr>
         @foreach ($records as $record)
         <tr class="attendance-list__row">
-            <td class="attendance-list__item">{{ $record->user->name }}</td>
+            <td class="attendance-list__item">
+                <a href="{{ route('attendance.user', ['user_id' => $record->user->id]) }}" class="attendance-list__username">
+                    {{ $record->user->name }}
+                </a>
+            </td>
             <td class="attendance-list__item">{{ $record->clock_in }}</td>
             <td class="attendance-list__item">{{ $record->clock_out }}</td>
-            <td class="attendance-list__item">{{ $record->total_break }}</td>
-            <td class="attendance-list__item">{{ $record->actual_working }}</td>
+            <td class="attendance-list__item" id="breaktime">{{ $record->total_break }}</td>
+            <td class="attendance-list__item" id="totalhours">{{ $record->actual_working }}</td>
         </tr>
         @endforeach
     </table>

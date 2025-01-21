@@ -16,7 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/breakend', [AttendanceController::class, 'breakEnd']);
     Route::get('/attendance', [AttendanceController::class, 'viewAttendance'])->name('attendance.view');
     Route::post('/attendance/date', [AttendanceController::class, 'ViewByDate'])->name('attendance.date');
-    Route::get('/user_attendance', [AttendanceController::class, 'viewUserAttendance'])->name('attendance.user');
+    Route::get('/attendance/user/{user_id}', [AttendanceController::class, 'viewUserAttendance'])->name('attendance.user');
     Route::get('/registered', [AttendanceController::class, 'viewRegistered']);
 });
 

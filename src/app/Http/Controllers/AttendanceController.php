@@ -193,12 +193,12 @@ class AttendanceController extends Controller
         return redirect()->route('attendance.view', ['date' => $displayDate->toDateString()]);
     }
 
-    //ログインユーザの勤怠一覧表示
-    public function viewUserAttendance(Request $request)
+    // ユーザの勤怠一覧表示
+    public function viewUserAttendance(Request $request, $user_id)
     {
-        $user = Auth::check();
+        $user = User::findOrFail($user_id);
 
-        $records = Attendance::where('user_id', Auth::id())
+        $records = Attendance::where('user_id', $user_id)
         ->finishedRecord()
         ->orderBy('date', 'desc')
         ->paginate(5);
