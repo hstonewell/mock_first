@@ -19,8 +19,8 @@ class AttendanceFactory extends Factory
 
     public function definition()
     {
-        $startDate = Carbon::create(2024, 6, 1);
-        $endDate = Carbon::create(2024, 9, 30);
+        $startDate = Carbon::create(2024, 12, 1);
+        $endDate = Carbon::create(2025, 1, 20);
 
         $randomDate = Carbon::createFromTimestamp(rand($startDate->timestamp, $endDate->timestamp));
 
