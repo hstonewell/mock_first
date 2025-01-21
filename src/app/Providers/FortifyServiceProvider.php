@@ -36,22 +36,6 @@ class FortifyServiceProvider extends ServiceProvider
                 return redirect('login');
             }
         });
-
-        $this->app->instance(LoginResponse::class, new class implements LoginResponse
-        {
-            public function toResponse($request)
-            {
-                return redirect('/');
-            }
-        });
-
-        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse
-        {
-            public function toResponse($request)
-            {
-                return redirect('registered');
-            }
-        });
     }
 
     /**
@@ -63,7 +47,9 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify');
+        });
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
